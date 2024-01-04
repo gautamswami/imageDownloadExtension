@@ -1,0 +1,11 @@
+{
+    "manifest_version": 2,
+    "name": "Image Downloader XXX4JAN",
+    "version": "1.0",
+    "description": "Download images from any webpage",
+    "browser_action": {
+         
+        "default_popup": "popup.html"
+    },
+    "permissions": ["activeTab", "downloads"]
+}

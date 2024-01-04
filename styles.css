@@ -1,0 +1,7 @@
+#imageContainer img {
+    width: 100px;
+    height: 100px;
+}
+#imageContainer button {
+    display: block;
+}
