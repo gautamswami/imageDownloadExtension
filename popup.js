@@ -18,42 +18,64 @@
 //         container.appendChild(button);
 //     });
 // }
-chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+document.getElementById("imagePick").addEventListener("click", function () {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.executeScript(
+      tabs[0].id,
+      {
+        code: 'Array.from(document.images).map(img => ({src: img.src, size: img.naturalWidth + "x" + img.naturalHeight}));',
+      },
+      function (imageUrls) {
+        displayImages(imageUrls);
+      }
+    );
+  });
+});
+chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
   chrome.tabs.executeScript(
     tabs[0].id,
-    {code: 'Array.from(document.images).map(img => ({src: img.src, size: img.naturalWidth + "x" + img.naturalHeight}));'},
+    {
+      code: 'Array.from(document.images).map(img => ({src: img.src, size: img.naturalWidth + "x" + img.naturalHeight}));',
+    },
     displayImages
   );
 });
 
+document.getElementById("fontPick").addEventListener("click", listFontFamilies);
+
 function displayImages(imageUrls) {
-  const container = document.getElementById('imageContainer');
+  handleButtonSelection("imagePick");
+  const container = document.getElementById("imageContainer");
+  container.innerHTML = ""; // Remove existing images
+
   if (!imageUrls) {
-    const message = document.createElement('p');
-    message.className = 'boldText';
-    message.textContent = 'Oops! no images found.';
+    const message = document.createElement("p");
+    message.className = "boldText";
+    message.textContent = "Oops! no images found.";
     container.appendChild(message);
     return;
   }
   const allUrls = imageUrls[0];
 
-  allUrls.forEach(url => {
-    const div = document.createElement('div');
-    div.className = 'contentDiv';
+  allUrls.forEach((url) => {
+    const div = document.createElement("div");
+    div.className = "contentDiv";
 
-    const img = document.createElement('img');
+    const img = document.createElement("img");
     img.src = url.src;
 
-    const button = document.createElement('button');
-    button.textContent = 'Download ';
-    const downloadIcon = document.createElement('i');
-    downloadIcon.className = 'fa-solid fa-download';
+    const button = document.createElement("button");
+    button.textContent = "Download ";
+    const downloadIcon = document.createElement("i");
+    downloadIcon.className = "fa-solid fa-download";
     button.appendChild(downloadIcon);
-    button.addEventListener('click', () => chrome.downloads.download({url: url.src}));
+    button.addEventListener("click", () =>
+      chrome.downloads.download({ url: url.src })
+    );
 
-    const size = document.createElement('p');
-    size.className = 'sizeText';
-    size.textContent =  url.size;
+    const size = document.createElement("p");
+    size.className = "sizeText";
+    size.textContent = url.size;
 
     div.appendChild(img);
     div.appendChild(button);
@@ -62,6 +84,46 @@ function displayImages(imageUrls) {
   });
 }
 
+function listFontFamilies() {
+  handleButtonSelection("fontPick");
+  const container = document.getElementById("imageContainer");
+  container.innerHTML = ""; // Remove existing images
+
+  const fontFamilies = Array.from(document.querySelectorAll("*"))
+    .map((element) => getComputedStyle(element).fontFamily)
+    .filter((fontFamily) => fontFamily !== "")
+    .filter((fontFamily, index, self) => self.indexOf(fontFamily) === index); // Remove duplicates
+
+  if (fontFamilies.length === 0) {
+    const message = document.createElement("p");
+    message.className = "boldText";
+    message.textContent = "No font families found.";
+    container.appendChild(message);
+    return;
+  }
+
+  const fontList = document.createElement("ul");
+  fontList.className = "fontList";
+  fontFamilies.forEach((fontFamily) => {
+    const listItem = document.createElement("li");
+    listItem.className = "fontListItem";
+    listItem.textContent = fontFamily;
+    fontList.appendChild(listItem);
+  });
+
+  container.appendChild(fontList);
+}
+
+// Add event listeners to the buttons
+
+// Function to handle button selection
+function handleButtonSelection(buttonId) {
+  const buttons = document.getElementsByClassName("headerButton");
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].classList.remove("imageButton");
+  }
+  document.getElementById(buttonId).classList.add("imageButton");
+}
 
 // function downloadAll(urls) {
 //     const zip = new JSZip();
