@@ -41,7 +41,6 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
   );
 });
 
-document.getElementById("fontPick").addEventListener("click", listFontFamilies);
 
 function displayImages(imageUrls) {
   handleButtonSelection("imagePick");
@@ -84,34 +83,57 @@ function displayImages(imageUrls) {
   });
 }
 
-function listFontFamilies() {
+document.getElementById("fontPick").addEventListener("click", function () {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.executeScript(
+      tabs[0].id,
+      {
+        code: `
+          const allElements = document.querySelectorAll('*');
+          const usedFonts = new Set();
+
+          allElements.forEach(element => {
+            const computedStyle = window.getComputedStyle(element);
+            const fontFamily = computedStyle.getPropertyValue('font-family');
+            if (fontFamily) {
+              fontFamily.split(',').forEach(font => usedFonts.add(font.trim()));
+            }
+          });
+
+          Array.from(usedFonts)
+        `,
+      },
+      function (fonts) {
+        displayFonts(fonts);
+      }
+    );
+  });
+});
+
+function displayFonts(fonts) {
   handleButtonSelection("fontPick");
+  console.log(fonts);
   const container = document.getElementById("imageContainer");
-  container.innerHTML = ""; // Remove existing images
+  container.innerHTML = ""; // Clear existing content
 
-  const fontFamilies = Array.from(document.querySelectorAll("*"))
-    .map((element) => getComputedStyle(element).fontFamily)
-    .filter((fontFamily) => fontFamily !== "")
-    .filter((fontFamily, index, self) => self.indexOf(fontFamily) === index); // Remove duplicates
-
-  if (fontFamilies.length === 0) {
+  if (!fonts) {
     const message = document.createElement("p");
     message.className = "boldText";
-    message.textContent = "No font families found.";
+    message.textContent = "Oops! no fonts found.";
     container.appendChild(message);
     return;
   }
 
-  const fontList = document.createElement("ul");
-  fontList.className = "fontList";
-  fontFamilies.forEach((fontFamily) => {
-    const listItem = document.createElement("li");
-    listItem.className = "fontListItem";
-    listItem.textContent = fontFamily;
-    fontList.appendChild(listItem);
-  });
+  fonts[0]?.forEach((font) => {
+    const div = document.createElement("div");
+    div.className = "contentDiv";
 
-  container.appendChild(fontList);
+    const fontText = document.createElement("p");
+    fontText.textContent = font;
+
+    div.appendChild(fontText);
+    container.appendChild(div);
+  });
 }
 
 // Add event listeners to the buttons
@@ -163,4 +185,37 @@ function handleButtonSelection(buttonId) {
 //       }
 //     });
 //   });
+// }
+
+
+
+// document.getElementById("fontPick").addEventListener("click", listFontFamilies);
+// function listFontFamilies() {
+//   handleButtonSelection("fontPick");
+//   const container = document.getElementById("imageContainer");
+//   container.innerHTML = ""; // Remove existing images
+
+//   const fontFamilies = Array.from(document.querySelectorAll("*"))
+//     .map((element) => getComputedStyle(element).fontFamily)
+//     .filter((fontFamily) => fontFamily !== "")
+//     .filter((fontFamily, index, self) => self.indexOf(fontFamily) === index); // Remove duplicates
+
+//   if (fontFamilies.length === 0) {
+//     const message = document.createElement("p");
+//     message.className = "boldText";
+//     message.textContent = "No font families found.";
+//     container.appendChild(message);
+//     return;
+//   }
+
+//   const fontList = document.createElement("ul");
+//   fontList.className = "fontList";
+//   fontFamilies.forEach((fontFamily) => {
+//     const listItem = document.createElement("li");
+//     listItem.className = "fontListItem";
+//     listItem.textContent = fontFamily;
+//     fontList.appendChild(listItem);
+//   });
+
+//   container.appendChild(fontList);
 // }
