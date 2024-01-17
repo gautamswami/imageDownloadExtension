@@ -1,23 +1,3 @@
-// chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-//     chrome.tabs.executeScript(
-//         tabs[0].id,
-//         {code: 'Array.from(document.images).map(img => img.src);'},
-//         displayImages
-//     );
-// });
-
-// function displayImages(imageUrls) {
-//     const container = document.getElementById('imageContainer');
-//     imageUrls[0].forEach(url => {
-//         const img = document.createElement('img');
-//         img.src = url;
-//         const button = document.createElement('button');
-//         button.textContent = 'Download';
-//         button.addEventListener('click', () => chrome.downloads.download({url}));
-//         container.appendChild(img);
-//         container.appendChild(button);
-//     });
-// }
 document.getElementById("imagePick").addEventListener("click", function () {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     chrome.tabs.executeScript(
@@ -84,11 +64,14 @@ function displayImages(imageUrls) {
 }
 
 document.getElementById("fontPick").addEventListener("click", function () {
+  console.log("fontPick");
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     chrome.tabs.executeScript(
       tabs[0].id,
       {
         code: `
+        console.log("fontPick2");
+        (function() {
           const allElements = document.querySelectorAll('*');
           const usedFonts = new Set();
 
@@ -100,7 +83,8 @@ document.getElementById("fontPick").addEventListener("click", function () {
             }
           });
 
-          Array.from(usedFonts)
+          return Array.from(usedFonts);
+        })();
         `,
       },
       function (fonts) {
@@ -136,9 +120,6 @@ function displayFonts(fonts) {
   });
 }
 
-// Add event listeners to the buttons
-
-// Function to handle button selection
 function handleButtonSelection(buttonId) {
   const buttons = document.getElementsByClassName("headerButton");
   for (let i = 0; i < buttons.length; i++) {
@@ -146,76 +127,3 @@ function handleButtonSelection(buttonId) {
   }
   document.getElementById(buttonId).classList.add("imageButton");
 }
-
-// function downloadAll(urls) {
-//     const zip = new JSZip();
-//     let count = 0;
-//     urls.forEach(url => {
-//         const filename = url.split('/').pop();
-//         const proxyUrl = 'https://your-server.com/download-script?image=' + encodeURIComponent(url);
-//         JSZipUtils.getBinaryContent(proxyUrl, function (err, data) {
-//             if(err) {
-//                 throw err;
-//             }
-//             zip.file(filename, data, {binary:true});
-//             count++;
-//             if (count === urls.length) {
-//                 zip.generateAsync({type:'blob'}).then(function(content) {
-//                     saveAs(content, 'images.zip');
-//                 });
-//             }
-//         });
-//     });
-// }
-// function downloadAll(urls) {
-//   const zip = new JSZip();
-//   let count = 0;
-//   urls.forEach(url => {
-//     const filename = url.split('/').pop();
-//     JSZipUtils.getBinaryContent(url, function (err, data) {
-//       if(err) {
-//         throw err;
-//       }
-//       zip.file(filename, data, {binary:true});
-//       count++;
-//       if (count === urls.length) {
-//         zip.generateAsync({type:'blob'}).then(function(content) {
-//           saveAs(content, 'images.zip');
-//         });
-//       }
-//     });
-//   });
-// }
-
-
-
-// document.getElementById("fontPick").addEventListener("click", listFontFamilies);
-// function listFontFamilies() {
-//   handleButtonSelection("fontPick");
-//   const container = document.getElementById("imageContainer");
-//   container.innerHTML = ""; // Remove existing images
-
-//   const fontFamilies = Array.from(document.querySelectorAll("*"))
-//     .map((element) => getComputedStyle(element).fontFamily)
-//     .filter((fontFamily) => fontFamily !== "")
-//     .filter((fontFamily, index, self) => self.indexOf(fontFamily) === index); // Remove duplicates
-
-//   if (fontFamilies.length === 0) {
-//     const message = document.createElement("p");
-//     message.className = "boldText";
-//     message.textContent = "No font families found.";
-//     container.appendChild(message);
-//     return;
-//   }
-
-//   const fontList = document.createElement("ul");
-//   fontList.className = "fontList";
-//   fontFamilies.forEach((fontFamily) => {
-//     const listItem = document.createElement("li");
-//     listItem.className = "fontListItem";
-//     listItem.textContent = fontFamily;
-//     fontList.appendChild(listItem);
-//   });
-
-//   container.appendChild(fontList);
-// }
