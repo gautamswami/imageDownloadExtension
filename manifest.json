@@ -1,12 +1,17 @@
 {
-    "manifest_version": 2,
-    "name": "Image Downloader XXX4JAN",
-    "version": "1.0",
-    "description": "Download images from any webpage",
-    "browser_action": {
-         
-        "default_popup": "popup.html"
-    },
-    "permissions": ["activeTab", "downloads"],
-    "content_security_policy": "script-src 'self' https://cdnjs.cloudflare.com; object-src 'self'"
+  "manifest_version": 2,
+  "name": "Image Downloader XXX4JAN",
+  "version": "1.0",
+  "description": "Download images from any webpage",
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+
+  "icons": {
+    "16": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  },
+  "permissions": ["activeTab", "downloads"],
+  "content_security_policy": "script-src 'self' https://cdnjs.cloudflare.com; object-src 'self'"
 }
