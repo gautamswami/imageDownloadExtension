@@ -21,7 +21,6 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
   );
 });
 
-
 function displayImages(imageUrls) {
   handleButtonSelection("imagePick");
   const container = document.getElementById("imageContainer");
@@ -110,13 +109,17 @@ function displayFonts(fonts) {
 
   fonts[0]?.forEach((font) => {
     const div = document.createElement("div");
-    div.className = "contentDiv";
+    div.className = "contentDiv textHeight";
 
     const fontText = document.createElement("p");
     fontText.textContent = font;
 
     div.appendChild(fontText);
     container.appendChild(div);
+    div.addEventListener("click", function () {
+      copyTextFunction(font);
+    });
+
   });
 }
 
@@ -126,4 +129,10 @@ function handleButtonSelection(buttonId) {
     buttons[i].classList.remove("imageButton");
   }
   document.getElementById(buttonId).classList.add("imageButton");
+}
+function copyTextFunction(copyText) {
+  console.log(copyText)
+  navigator.clipboard.writeText(copyText);
+
+  // Alert the copied text
 }

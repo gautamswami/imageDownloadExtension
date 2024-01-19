@@ -8,19 +8,22 @@
     height: 400px;
     overflow: scroll;
     background:#A98467;
-   justify-content: center;
+    
    border: 3px dashed #6c594c;
    flex-direction:column;
+   position: relative;
 }
 #imageContainer{
     display: flex;
     flex-wrap: wrap;
     width: 580px;
-    height: 400px;
+    /* height: 400px; */
     overflow: scroll;
     background:#A98467;
    justify-content: center;
    padding: 12px;
+   height: fit-content;
+   margin-top: 30px;
 }
 #imageContainer img {
     width: 100px;
@@ -45,7 +48,7 @@
     padding: 4px 8px;
     color: #ffff;
     box-shadow: 0 0 9px #F0EAD2;
-    
+    cursor: pointer;
 }
 .contentDiv{
     display: flex;
@@ -67,6 +70,10 @@
     box-shadow: 0 0 8px 6px #6C584C;
     transition: all 0.5s ease-in-out;
 }
+.textHeight{
+    height: 22px;
+    cursor: pointer;
+}
 .sizeText{
     font-size: 14px;
 }
@@ -86,6 +93,9 @@
     place-content: center;
     gap: 3px;
     padding: 0 3px;
+    position: absolute;
+    top: 0;
+    width: 98%;
 }
 .selectedTab , .imageButton{
     background: #f0ead3;
