@@ -124,3 +124,11 @@
     box-shadow: 0 0 4px black;
     cursor: pointer;
 }
+.colorText{
+    position: absolute;
+    bottom: -18px;
+    text-align: center;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+}
