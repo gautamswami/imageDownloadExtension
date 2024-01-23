@@ -119,10 +119,8 @@ function displayFonts(fonts) {
     div.addEventListener("click", function () {
       copyTextFunction(font);
     });
-
   });
 }
-
 
 document.getElementById("colorPick").addEventListener("click", function () {
   findColorsAndDisplay();
@@ -182,7 +180,6 @@ function displayColors(colors) {
 
   console.log(uniqueColors, "--unique colors here---");
 
-  
   uniqueColors[0].forEach((color) => {
     const div = document.createElement("div");
     div.className = "contentDiv";
@@ -205,7 +202,6 @@ function displayColors(colors) {
       copyTextFunction(color);
     });
   });
-
 }
 
 function handleButtonSelection(buttonId) {
@@ -222,8 +218,6 @@ function copyTextFunction(copyText) {
 
   // Alert the copied text
 }
-   
-
 
 function handleButtonSelection(buttonId) {
   const buttons = document.getElementsByClassName("headerButton");
@@ -233,8 +227,35 @@ function handleButtonSelection(buttonId) {
   document.getElementById(buttonId).classList.add("imageButton");
 }
 function copyTextFunction(copyText) {
-  console.log(copyText)
+  console.log(copyText);
   navigator.clipboard.writeText(copyText);
 
   // Alert the copied text
 }
+
+document.getElementById("mediaPick").addEventListener("click", function () {
+  handleButtonSelection("mediaPick");
+  const container = document.getElementById("imageContainer");
+  container.innerHTML = ""; // Remove existing content
+
+  const message = document.createElement("p");
+  message.className = "boldText";
+  message.textContent = `COMING SOON JOIN WAITING LIST`; // Added line break
+  message.style.textDecoration="underline"
+  message.style.textAlign="center"
+  container.appendChild(message);
+
+  const emailInput = document.createElement("input");
+  emailInput.type = "email";
+  emailInput.placeholder = "Enter your email";
+  container.appendChild(emailInput);
+
+  const signupButton = document.createElement("button");
+  signupButton.textContent = "Sign Up";
+  signupButton.addEventListener("click", function () {
+    const email = emailInput.value;
+    // Perform signup logic here
+    console.log("Signed up with email:", email);
+  });
+  container.appendChild(signupButton);
+});
