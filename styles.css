@@ -23,19 +23,20 @@
    justify-content: center;
    padding: 12px;
    height: fit-content;
-   margin-top: 30px;
+   margin-top: 2.5rem;
+   
 }
 #imageContainer img {
     width: 100px;
     height: 100px;
     object-fit: contain;
 }
-.boldText{
-    color: #49382e;
-    font-size: 45px;
-    font-weight: 600;
+.boldText{ 
     text-shadow: 8px 6px 5px #48372d;
     margin: auto;
+    font-size: 32px;
+    color: #4a392f;
+    font-weight: 100;
 }
 #imageContainer button {
     display: block;
@@ -63,6 +64,9 @@
     gap: 10px;
     background-color: #F0EAD2;
     transition: all 0.2s ease-in-out;
+}
+.paleteBG{
+    background-color: #fffae95c
 
 }
 .contentDiv:hover{
@@ -86,6 +90,7 @@
     font-weight: 800;
     width: 100%;
     cursor: pointer;
+    position: relative;
 }
 .headerDiv{
     display: flex;
@@ -96,6 +101,7 @@
     position: absolute;
     top: 0;
     width: 98%;
+    z-index: 99;
 }
 .selectedTab , .imageButton{
     background: #f0ead3;
@@ -131,4 +137,62 @@
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
+}
+.copiedText{
+    position: absolute;
+    bottom: -23px;
+    z-index: 999;
+    background: rgba(72, 60, 51, 0.173);
+    backdrop-filter: blur(11px);
+    padding: 4px;
+    border-radius: 5px;
+    color: white;
+    transition: .3s ease-in-out;
+    opacity: 0;
+}
+.infoText{
+    font-size: 8px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -1rem;
+    padding: 2px 4px;
+    background: #3f2e1f;
+    border-radius: 3px;
+    width: 115px;
+    color: white;
+    display: none;
+    font-weight: 300;
+    cursor: unset;
+}
+.emailInput{
+    border: 1px solid #4a392fa8;
+    border-radius: 6px;
+    padding: 6px;
+    background: #4a392f96;
+    color: #ddd8d6;
+    outline: none;
+    box-shadow: 0 0 9px black inset;
+    width: 200px;
+}
+.signupButton{
+    background: #4a392f;
+    border: 1px solid #4a392f;
+    border-radius: 5px;
+    padding: 4px 10px;
+    box-shadow: 0 0 9px #2a2318 inset;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+}
+.formContainer{
+    display: flex;
+    gap: 10px;
+    margin: 24px 0;
+}
+.notifyText{
+    font-size: 32px;
+    margin-top: 15px;
+    color: #4a392f;
+    font-weight: 100;
 }
