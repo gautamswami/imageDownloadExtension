@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Image Downloader XXX4JAN",
+  "name": "Image Font Color",
   "version": "1.0",
-  "description": "Download images from any webpage",
+  "description": "Get images , font family and font color from any webpage",
   "browser_action": {
     "default_popup": "popup.html"
   },

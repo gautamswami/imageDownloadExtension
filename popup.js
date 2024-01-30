@@ -24,33 +24,56 @@ document.getElementById("mediaPick").addEventListener("click", function () {
   message.style.textAlign = "center";
   container.appendChild(message);
   const formContainer = document.createElement("div");
+  const formD = document.createElement("form");
   formContainer.classList.add("formContainer");
   const emailInput = document.createElement("input");
   emailInput.classList.add("emailInput");
   emailInput.type = "email";
   emailInput.placeholder = "Enter your email";
-  
+  emailInput.required = true;
 
   const signupButton = document.createElement("button");
-  signupButton.textContent = "Sign Up";
+  signupButton.textContent = "Join Waitlist";
   signupButton.classList.add("signupButton");
   signupButton.addEventListener("click", function () {
     const email = emailInput.value;
     // Perform signup logic here
-    emailInput.remove();
-    signupButton.remove();
 
-    // Show notification text
-    const notifyText = document.createElement("p");
-    notifyText.classList.add("notifyText");
-    notifyText.textContent = "We will notify you very soon!";
-    container.appendChild(notifyText);
-    console.log("Signed up with email:", email);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      to: email,
+      subject: "TEST MAIL",
+      text: "HI BRO",
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("http://54.87.255.16:3000/send-email", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+      const notifyText = document.createElement("p");
+  notifyText.classList.add("notifyText");
+  notifyText.textContent = "We will notify you very soon!";
+  container.appendChild(notifyText);
+  console.log("Signed up with email:", email);
+
   });
+  emailInput.remove();
+  signupButton.remove();
+
+  // Show notification text
+  
   formContainer.appendChild(emailInput);
   formContainer.appendChild(signupButton);
   container.appendChild(formContainer);
-  
 });
 
 document.getElementById("fontPick").addEventListener("click", function () {
@@ -250,7 +273,7 @@ function displayColors(colors) {
 
 function handleButtonSelection(buttonId) {
   const buttons = document.getElementsByClassName("headerButton");
-  
+
   for (let i = 0; i < buttons.length; i++) {
     buttons[i].classList.remove("imageButton");
   }
